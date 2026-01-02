@@ -1,4 +1,5 @@
 import sys
+import os
 import librosa
 from transformers import Pop2PianoForConditionalGeneration, Pop2PianoProcessor, Pop2PianoTokenizer
 import torch
@@ -8,7 +9,8 @@ import shutil
 
 def generate_midi(song_path, output_dir=None):
   if output_dir is None:
-    output_dir = "./Outputs"
+    # Use environment variable if set (for Docker), otherwise default
+    output_dir = os.getenv("OUTPUT_DIR", "./outputs")
 
   print("Loading Model...")
   device = "cuda" if torch.cuda.is_available() else "cpu"

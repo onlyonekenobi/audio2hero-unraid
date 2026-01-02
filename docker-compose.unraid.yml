@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  audio2hero:
+    build: .
+    container_name: audio2hero
+    restart: unless-stopped
+    ports:
+      - "7860:7860"  # Gradio web interface
+    volumes:
+      # Mount Unraid shares - adjust paths to your Unraid setup
+      # Input directory for audio files
+      - /mnt/user/appdata/audio2hero/inputs:/app/inputs:ro
+      # Output directory for generated files
+      - /mnt/user/appdata/audio2hero/outputs:/app/outputs
+      # Cache directory for model files (persists between restarts)
+      - /mnt/user/appdata/audio2hero/cache:/root/.cache
+      # Optional: Mount a music share for easy access
+      # - /mnt/user/music:/app/music:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+      - OUTPUT_DIR=/app/outputs
+      # Optional: Set timezone
+      - TZ=America/New_York
+    # Resource limits - adjust based on your server capabilities
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+

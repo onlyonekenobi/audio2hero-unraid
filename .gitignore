@@ -21,8 +21,36 @@ cache/*
 models/
 
 # generated files
+Outputs/
+outputs/
+inputs/
+error_log.txt
+*.log
 
 # dataset
 bigdataset_unprocessed/
 clonehero_processed/
 /__pycache__
+
+# Docker volumes and local data
+*.zip
+!*.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local test files (keep structure but not content)
+clonehero/*/
+processed/audio/
+processed/midi/
+processed/midi_nostrum/
+processed/piano_midi/
+testing_midi/*.ogg
+testing_midi/*.mp3

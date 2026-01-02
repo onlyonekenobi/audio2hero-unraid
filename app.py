@@ -1,7 +1,22 @@
 import gradio as gr
 from transformers import pipeline
+import sys
+import os
+
+# Add current directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from audio2hero import generate_midi
-import spaces
+try:
+    import spaces
+except ImportError:
+    # spaces is optional for local use
+    class GPU:
+        def __init__(self, func):
+            self.func = func
+        def __call__(self, *args, **kwargs):
+            return self.func(*args, **kwargs)
+    spaces = type('spaces', (), {'GPU': GPU})()
 
 
 
@@ -17,4 +32,7 @@ gradio_app = gr.Interface(
 )
 
 if __name__ == "__main__":
-    gradio_app.launch()
+    # Allow server name and port to be configured via environment variables
+    server_name = os.getenv("GRADIO_SERVER_NAME", "127.0.0.1")
+    server_port = int(os.getenv("GRADIO_SERVER_PORT", 7860))
+    gradio_app.launch(server_name=server_name, server_port=server_port, share=False)
